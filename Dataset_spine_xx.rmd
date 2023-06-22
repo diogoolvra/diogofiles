@@ -1,0 +1,578 @@
+---
+title: "Final Report"
+author: "Diogo Oliveira (2017244910) & Henrique Tavares (2017242743)"
+date: "31 de Dezembro de 2019"
+output:
+word_document: default
+pdf_document: default
+---
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+dataset <- read.csv("C:/Users/diogo/OneDrive/Ambiente de Trabalho/lower-back-pain-symptoms-dataset/Dataset_spine_hd.csv")
+
+```
+
+
+##Introduction
+
+
+
+#Definicao dos atributos
+
+```{r}
+
+pelvic_incidence <- dataset$pelvic_incidence
+pelvic_tilt <- dataset$pelvic_tilt
+lumbar_lordosis_angle <- dataset$lumbar_lordosis_angle
+sacral_slope <- dataset$sacral_slope
+pelvic_radius <- dataset$pelvic_radius
+degree_spondylolisthesis <- dataset$degree_spondylolisthesis
+pelvic_slope <- dataset$pelvic_slope
+direct_tilt <- dataset$direct_tilt
+thoracic_slope <- dataset$thoracic_slope
+cervical_tilt <- dataset$cervical_tilt
+sacrum_angle <- dataset$sacrum_angle
+scoliosis_slope <- dataset$scoliosis_slope
+
+#Results: Classificacao da dor(ou normal ou abnormal)
+results <- dataset$results
+
+```
+
+##Boxplots
+
+Primeiro, decidimos observar os dados usando boxplots, para perceber se podemos descartar alguma variavel baseado apenas em observacao.
+
+```{r}
+
+boxplot(pelvic_incidence ~ results,
+        xlab="Classification", 
+        ylab="Pelvic Incidence",
+        main='Pelvic Incidence Vs. Classification', 
+        col=c('limegreen', 'red2'))
+
+boxplot(pelvic_tilt ~ results,
+        xlab="Classification", 
+        ylab="Pelvic Tilt",
+        main='Pelvic Tilt Vs. Classification', 
+        col=c('limegreen', 'red2'))
+
+boxplot(lumbar_lordosis_angle ~ results,
+        xlab="Classification", 
+        ylab="Lumbar Lordosis Angle",
+        main='Lumbar Lordosis Angle Vs. Classification', 
+        col=c('limegreen', 'red2'))
+
+boxplot(sacral_slope ~ results,
+        xlab="Classification", 
+        ylab="Sacral Slope",
+        main='Sacral Slope Vs. Classification', 
+        col=c('limegreen', 'red2'))
+
+boxplot(pelvic_radius ~ results,
+        xlab="Classification", 
+        ylab="Pelvic Radius",
+        main='Pelvic Radius Vs. Classification', 
+        col=c('limegreen', 'red2'))
+
+boxplot(degree_spondylolisthesis ~ results,
+        xlab="Classification", 
+        ylab="Degree Spondylolisthesis",
+        main='Degree Spondylolisthesis Vs. Classification', 
+        col=c('limegreen', 'red2'))
+
+boxplot(pelvic_slope ~ results,
+        xlab="Classification", 
+        ylab="Pelvic Slope",
+        main='Pelvic Slope Vs. Classification', 
+        col=c('limegreen', 'red2'))
+
+boxplot(direct_tilt ~ results,
+        xlab="Classification", 
+        ylab="Direct Tilt",
+        main='Direct Tilt Vs. Classification', 
+        col=c('limegreen', 'red2'))
+
+boxplot(thoracic_slope ~ results,
+        xlab="Classification", 
+        ylab="Thoracic Slope",
+        main='Thoracic Slope Vs. Classification', 
+        col=c('limegreen', 'red2'))
+
+boxplot(cervical_tilt ~ results,
+        xlab="Classification", 
+        ylab="Cervical Tilt",
+        main='Cervical Tilt Vs. Classification', 
+        col=c('limegreen', 'red2'))
+
+boxplot(sacrum_angle ~ results,
+        xlab="Classification", 
+        ylab="Sacrum Angle",
+        main='Sacrum Angle Vs. Classification', 
+        col=c('limegreen', 'red2'))
+
+boxplot(scoliosis_slope ~ results,
+        xlab="Classification", 
+        ylab="Scoliosis Slope",
+        main='Scoliosis Slope Vs. Classification', 
+        col=c('limegreen', 'red2'))
+
+```
+
+Atraves da observacao dos boxplots nao descartamos nenhuma variavel pois nao encontramos situaçoes que consideramos fora daquilo que consideramos aceitavel.
+
+##Teste de Shapiro-Wilk 
+
+As variaveis sao todas quantitativas, logo, aplicamos o teste de Shapiro-Wilk para determinar se estes seguem uma distribuicao normal ou nao.
+
+
+```{r}
+
+#pelvic incidence
+npelvic_incidence <- dataset[results == 'Normal',]$pelvic_incidence #valores normais de pelvic incidence
+apelvic_incidence <- dataset[results == 'Abnormal',]$pelvic_incidence #valores anormais de pelvic incidence 
+
+shapiro.test(npelvic_incidence)
+shapiro.test(apelvic_incidence)
+
+#pelvic tilt
+npelvic_tilt <- dataset[results == 'Normal',]$pelvic_tilt #valores normais de pelvic tilt
+apelvic_tilt <- dataset[results == 'Abnormal',]$pelvic_tilt #valores anormais de pelvic tilt
+
+shapiro.test(npelvic_tilt)
+shapiro.test(apelvic_tilt)
+
+#lumbar lordosis angle
+nlumbar_lordosis_angle <- dataset[results == 'Normal',]$lumbar_lordosis_angle #valores normais de lumbar lordosis angle
+alumbar_lordosis_angle <- dataset[results == 'Abnormal',]$lumbar_lordosis_angle #valores anormais de lumbar lordosis angle
+
+shapiro.test(nlumbar_lordosis_angle)
+shapiro.test(alumbar_lordosis_angle)
+
+#sacral slope
+nsacral_slope <- dataset[results == 'Normal',]$sacral_slope #valores normais de sacral slope
+asacral_slope <- dataset[results == 'Abnormal',]$sacral_slope #valores anormais de sacral slope 
+
+shapiro.test(nsacral_slope)
+shapiro.test(asacral_slope)
+
+#pelvic radius
+npelvic_radius <- dataset[results == 'Normal',]$pelvic_radius #valores normais de pelvic radius 
+apelvic_radius <- dataset[results == 'Abnormal',]$pelvic_radius #valores anormais de pelvic radius 
+
+shapiro.test(npelvic_radius)
+shapiro.test(apelvic_radius)
+
+#degree spondylolisthesis
+ndegree_spondylolisthesis <- dataset[results == 'Normal',]$degree_spondylolisthesis #valores normais de degree spondylolisthesis 
+adegree_spondylolisthesis <- dataset[results == 'Abnormal',]$degree_spondylolisthesis #valores anormais de degree spondylolisthesis 
+
+shapiro.test(ndegree_spondylolisthesis)
+shapiro.test(adegree_spondylolisthesis)
+
+#pelvic slope
+npelvic_slope <- dataset[results == 'Normal',]$pelvic_slope #valores normais de pelvic slope 
+apelvic_slope <- dataset[results == 'Abnormal',]$pelvic_slope #valores anormais de pelvic slope 
+
+shapiro.test(npelvic_slope)
+shapiro.test(apelvic_slope)
+
+#direct tilt
+ndirect_tilt <- dataset[results == 'Normal',]$direct_tilt #valores normais de direct tilt 
+adirect_tilt <- dataset[results == 'Abnormal',]$direct_tilt #valores anormais de direct tilt 
+
+shapiro.test(ndirect_tilt)
+shapiro.test(adirect_tilt)
+
+#thoracic slope
+nthoracic_slope <- dataset[results == 'Normal',]$thoracic_slope #valores normais de thoracic slope 
+athoracic_slope <- dataset[results == 'Abnormal',]$thoracic_slope #valores anormais de thoracic slope 
+
+shapiro.test(nthoracic_slope)
+shapiro.test(athoracic_slope)
+
+#cervical tilt
+ncervical_tilt <- dataset[results == 'Normal',]$cervical_tilt #valores normais de cervical tilt 
+acervical_tilt <- dataset[results == 'Abnormal',]$cervical_tilt #valores anormais de cervical tilt 
+
+shapiro.test(ncervical_tilt)
+shapiro.test(acervical_tilt)
+
+#sacrum angle
+nsacrum_angle <- dataset[results == 'Normal',]$sacrum_angle #valores normais de sacrum angle 
+asacrum_angle <- dataset[results == 'Abnormal',]$sacrum_angle #valores anormais de sacrum angle 
+
+shapiro.test(nsacrum_angle)
+shapiro.test(asacrum_angle)
+
+#scoliosis slope
+nscoliosis_slope <- dataset[results == 'Normal',]$scoliosis_slope #valores normais de scoliosis slope 
+ascoliosis_slope <- dataset[results == 'Abnormal',]$scoliosis_slope #valores anormais de scoliosis slope 
+
+shapiro.test(nscoliosis_slope)
+shapiro.test(ascoliosis_slope)
+
+```
+
+Os resultados mostram que todas as variaveis tem um valor de p menor que 0.05, logo rejeita-se a hipotese nula e portanto teremos de usar testes nao parametricos para avaliar a relevancia dos dados.
+
+##Teste de Wilcoxon 
+
+O teste Mann-Whitney (Wilcoxon Rank Sum Test) e um teste nao parametrico aplicado para 2 classes independentes.
+Para o teste Wilcoxon a hipotese nula e a seguinte: nao ha diferencas entre o valor das medianas.
+
+
+```{r}
+
+options(warn=-1)
+wilcox.test(pelvic_incidence ~ results, paired = FALSE)
+wilcox.test(pelvic_tilt ~ results, paired = FALSE)
+wilcox.test(lumbar_lordosis_angle ~ results, paired = FALSE)
+wilcox.test(sacral_slope ~ results, paired = FALSE)
+wilcox.test(pelvic_radius ~ results, paired = FALSE)
+wilcox.test(degree_spondylolisthesis ~ results, paired = FALSE)
+wilcox.test(pelvic_slope ~ results, paired = FALSE)
+wilcox.test(direct_tilt ~ results, paired = FALSE)
+wilcox.test(thoracic_slope ~ results, paired = FALSE)
+wilcox.test(cervical_tilt ~ results, paired = FALSE)
+wilcox.test(sacrum_angle ~ results, paired = FALSE)
+wilcox.test(scoliosis_slope ~ results, paired = FALSE)
+
+```
+
+Para as variaveis pelvic incidence, pelvic tilt, lumbar lordosis angle, sacral slope, pelvic radius e degree spondylolisthesis, p menor que 0.05, portanto rejeita-se a hipotese nula.Isto permite-nos confirmar o que tinhamos observado nos boxplots: que estas variaveis sao dependentes da variavel de classificacao.
+
+
+##General Linearized Model (GLM)
+
+#Grupos de teste e treino
+
+Agora, para criar um classificador GLM, usando as variaveis que nao foram excluidas durantes os testes Shappiro-Wilk and e Wilcoxon. Dividimos os nossos dados em 2 grupos: um grupo de treino(para ajustar o modelo estatistico) e um grupo de teste(para testar e validar o modelo). Estes sao divididos numa proporcao 70/30, respetivamente.
+
+```{r}
+
+indice <- sample(2,nrow(dataset),replace = TRUE,prob=c(0.7,0.3))
+grupo_treino <- dataset[indice==1,]
+grupo_teste <- dataset[indice==2,]
+
+```
+
+#GLM1 para o grupo de treino
+```{r}
+
+GLM <- glm(formula = results ~ pelvic_incidence + pelvic_tilt + lumbar_lordosis_angle + sacral_slope + pelvic_radius + degree_spondylolisthesis, data = grupo_treino, family = binomial)
+
+summary(GLM)
+
+```
+
+Ao analisar o sumario do modelo, podemos concluir que as variaveis pelvic radius e degree spondylolisthesis sao as mais significantes. Portanto, decidimos fazer um modelo GLM que inclui apenas essas duas variáveis.
+
+#GLM2 para o grupo de treino
+```{r}
+
+GLM <- glm(formula = results ~ pelvic_radius + degree_spondylolisthesis, data = grupo_treino, family = binomial)
+
+summary(GLM)
+
+confint(GLM)
+
+```
+
+Isto confirma novamente que ambas as variáveis são relevantes.
+
+#Plot de GLM
+```{r}
+
+Color = grupo_treino$results == 1
+plot(grupo_treino$pelvic_radius, GLM$fitted.values,
+ col = c('#66CCFF','red'),
+ xlab = 'Train Pelvic Radius',
+ ylab = 'Fitted Values GLM',
+ pch = 19)
+
+
+Color = grupo_treino$results == 1
+plot(grupo_treino$degree_spondylolisthesis, GLM$fitted.values,
+ col = c('#66CCFF','red'),
+ xlab = 'Train Degree Spondylolisthesis',
+ ylab = 'Fitted Values GLM',
+ pch = 19)
+
+```
+
+
+#Colunas e grafico GLM
+```{r}
+
+# Coefficient of the relationship between the estimated and the intersection
+coluna_1 <- coef(summary(GLM))[1,1]
+# Coefficient of the relationship between the estimated and Pelvic Radius
+coluna_2 <- coef(summary(GLM))[2,1]
+# Coefficient of the relationship between the estimated and Degree Spondylolisthesis
+coluna_3 <- coef(summary(GLM))[3,1]
+
+plot(coluna_2*grupo_treino$pelvic_radius+coluna_3*grupo_treino$degree_spondylolisthesis,GLM$fitted.values,
+ col=c('#66CCFF','red'),
+ xlab = 'Combined Model',
+ ylab = 'Corrected Values',
+ main = 'Logistic Model',
+ pch=19)
+
+legend('bottomright',
+       c('Normal','Abnormal'),
+       cex=1,col = c('#66CCFF','red'),
+       merge=FALSE,pch = 19)
+
+```
+
+
+##Modelo de Avaliacao Logistica
+
+Agora podemos fazer alguns testes de modo a avaliar o nosso classificador.
+
+#Testes Wald and Hosmer-Lemeshow
+
+O teste Wald e um teste parametrico estatistico, este compara o parametro estimado com o parametro de modelo nulo.
+O teste Hosmer-Lemeshow e um teste estatistico para a qualidade do ajuste do modelo de regressao logistica. Este avalia o modelo atraves de distancias entre probabilidades ajustadas e observadas.
+
+
+```{r}
+
+library(aod) 
+wald_test <- wald.test(b=coef(GLM), Sigma = vcov(GLM), Terms=1:2)
+print(wald_test)
+
+library(ResourceSelection)
+hosmer_lemeshow <- hoslem.test(GLM$y, fitted(GLM),g=10) 
+print(hosmer_lemeshow)
+
+```
+
+O teste Wald mostra-nos que as nossas variaveis sao estatisticamente significantes, pois p menor que 0.05.
+Por outro lado, o teste Hoslem-Lemeshow diz-nos que ha uma elevada chance do nosso modelo ser adequado pois p maior que 0.05.
+
+#Cox-Snell e Naguelkerke R^2
+```{r}
+
+GLM_null <- glm(results ~ 1, data=dataset, family=binomial) 
+LL_null <- logLik(GLM_null)
+LL_k <- logLik(GLM)
+R_Cox <- 1 - (exp(LL_null[1])/exp(LL_k[1]))^(2/length(dataset$results)) 
+R_Nag <- R_Cox/(1-(exp(LL_null[1]))^(2/length(dataset$results)))
+R2 <- R_Cox/R_Nag
+
+# Cox-Snell
+print(sprintf('R2 Cox = %s',R_Cox))
+
+# Naguelkerke
+print(sprintf('R2 Naguelkerke = %s',R_Nag))
+
+print(sprintf('R2 = %s',R2))
+
+```
+
+Os valores R^2 variam entre 0 e 1 e quanto mais altos forem, mais explicativo será o modelo, ou seja, melhor se adequa ao exemplo.
+
+
+#Matriz confusion
+
+Tambem avaliamos a regressao logistica usando a matriz confusion:
+
+```{r}
+
+library(knitr)
+prob = predict(GLM,type = c('response'),grupo_treino)
+confusion <- table(prob>0.5,grupo_treino$results)
+kable(confusion)
+
+
+```
+
+#Exatidão, especificidade e sensibilidade
+```{r}
+
+new_glm <- list()
+v_intercecao <- list()
+v_pelvic_radius <- list()
+v_degree_spondylolisthesis <- list()
+exatidao_treino <- c()
+sensibilidade_treino <- c()
+especificidade_treino <- c()
+exatidao_teste <- c()
+sensibilidade_teste <- c()
+especificidade_teste <- c()
+
+for(i in 1:500){
+ dados_ciclo <- dataset
+ indice_2 <- sample(2,nrow(dados_ciclo),replace = TRUE,prob = c(0.7,0.3))
+ grupo_treino_2 <- dados_ciclo[indice_2==1,]
+ grupo_teste_2 <- dados_ciclo[indice_2==2,]
+
+ new_glm[[i]] <- glm(formula=results ~ pelvic_radius + degree_spondylolisthesis,data = grupo_treino_2,family = binomial)
+
+ v_intercecao[[i]]<-lapply(new_glm,coef)[[i]][1]
+ v_pelvic_radius[[i]]<- lapply(new_glm,coef)[[i]][2]
+ v_degree_spondylolisthesis[[i]]<-lapply(new_glm,coef)[[i]][3]
+ 
+
+ prob1 <- predict(new_glm[[i]],data=grupo_treino_2)
+ conf1 <- table(prob1>0.5,grupo_treino_2$results)
+ exatidao_treino <- c(exatidao_treino, ((conf1[1,1]+conf1[2,2])/(sum(conf1))))
+ sensibilidade_treino <- c(sensibilidade_treino,(conf1[1,1]/(conf1[1,1]+conf1[2,1])))
+ especificidade_treino <- c(especificidade_treino, (conf1[2,2]/(conf1[2,2]+conf1[1,2])))
+
+ prob2 <- predict(new_glm[[i]],newdata=grupo_teste_2)
+ conf2 <- table(prob2>0.5,grupo_teste_2$results)
+
+ exatidao_teste <- c(exatidao_teste, (conf2[1,1]+conf2[2,2])/sum(conf2))
+ sensibilidade_teste <- c(sensibilidade_teste,(conf2[1,1]/(conf2[1,1]+conf2[2,1])))
+ especificidade_teste <- c(especificidade_teste, (conf2[2,2]/(conf2[2,2]+conf2[1,2])))
+}
+
+```
+
+
+#Exatidão, especificidade e sensibilidade do grupo de treino
+```{r}
+# Accuracy
+mean(exatidao_treino)
+
+# Specificity
+mean(especificidade_treino)
+
+
+# Sensitivity
+mean(sensibilidade_treino)
+
+```
+
+#Exatidão, especificidade e sensibilidade do grupo de teste
+```{r}
+# Accuracy
+mean(exatidao_teste)
+
+# Specificity
+mean(especificidade_teste)
+
+# Sensitivity
+mean(sensibilidade_teste)
+
+```
+
+#SVM
+
+O SMV permite-nos criar um hiperplano que maximiza a separacao entre os casos normais e anormais.
+
+```{r}
+library(e1071)
+modeloSVM<-svm(results ~ pelvic_radius + degree_spondylolisthesis,data=grupo_treino,
+               cost=100,
+               gamma=0.75)
+plot(coluna_2*grupo_treino$pelvic_radius+coluna_3*grupo_treino$degree_spondylolisthesis,modeloSVM$fitted.values,
+ col=c('#66CCFF','red'),
+ xlab = 'Combined Model',
+ ylab = 'Corrected Values',
+ main = 'Logistic Model',
+ pch=19)
+
+legend('bottomright',
+       c('Normal','Abnormal'),
+       cex=1,col = c('#66CCFF','red'),
+       merge=FALSE,pch = 19)
+
+```
+
+#Matriz confusion SVM
+
+Tambem avaliamos o SVM usando a matriz confusion:
+
+```{r}
+
+library(knitr)
+probsvm = predict(modeloSVM,type = c('response'),grupo_treino)
+confusionsvm <- table(probsvm,grupo_treino$results)
+kable(confusionsvm)
+
+
+```
+
+#Exatidão, especificidade e sensibilidade com SVM
+
+```{r}
+
+new_svm <- list()
+v_intercecao_2 <- list()
+v_pelvic_radius_2 <- list()
+v_degree_spondylolisthesis_2 <- list()
+
+exatidao_treino_2 <- c()
+sensibilidade_treino_2 <- c()
+especificidade_treino_2 <- c()
+exatidao_teste_2 <- c()
+sensibilidade_teste_2 <- c()
+especificidade_teste_2 <- c()
+
+for(p in 1:500){
+ dadosciclo_2 <- dataset
+ indice_3 <- sample(2,nrow(dadosciclo_2),replace = TRUE,prob = c(0.7,0.3))
+ grupo_treino_3 <- dadosciclo_2[indice_3==1,]
+ grupo_teste_3 <- dadosciclo_2[indice_3==2,]
+
+ new_svm[[p]] <- glm(formula=results~pelvic_radius+degree_spondylolisthesis,data = grupo_treino_3,family = binomial)
+
+ v_intercecao_2[[p]]<-lapply(new_svm,coef)[[p]][1]
+ v_pelvic_radius_2[[p]]<- lapply(new_svm,coef)[[p]][2]
+ v_degree_spondylolisthesis_2[[p]]<-lapply(new_svm,coef)[[p]][3]
+
+ prob3 <- predict(new_svm[[p]],data=grupo_treino_3)
+ conf3 <- table(prob3>0.5,grupo_treino_3$results)
+
+ exatidao_treino_2 <- c(exatidao_treino_2, ((conf3[1,1]+conf3[2,2])/(sum(conf3))))
+ sensibilidade_treino_2 <- c(sensibilidade_treino_2 ,(conf3[1,1]/(conf3[1,1]+conf3[2,1])))
+ especificidade_treino_2 <- c(especificidade_treino_2, (conf3[2,2]/(conf3[2,2]+conf3[1,2])))
+
+
+ prob4 <- predict(new_svm[[p]],newdata=grupo_teste_3)
+ conf4 <- table(prob4>0.5,grupo_teste_3$results)
+
+ exatidao_teste_2 <- c(exatidao_teste_2,
+ (conf4[1,1]+conf4[2,2])/sum(conf4))
+ sensibilidade_teste_2 <- c(sensibilidade_teste_2,
+ (conf4[1,1]/(conf4[1,1]+conf4[2,1])))
+ especificidade_teste_2 <- c(especificidade_teste_2,
+ (conf4[2,2]/(conf4[2,2]+conf4[1,2])))
+}
+
+```
+
+
+#Exatidão, especificidade e sensibilidade do grupo de treino SVM
+```{r}
+# Accuracy
+mean(exatidao_treino_2)
+
+# Specificity
+mean(especificidade_treino_2)
+
+
+# Sensitivity
+mean(sensibilidade_treino_2)
+
+```
+
+#Exatidão, especificidade e sensibilidade do grupo de teste SVM
+
+```{r}
+# Accuracy
+mean(exatidao_teste_2)
+
+# Specificity
+mean(especificidade_teste_2)
+
+# Sensitivity
+mean(sensibilidade_teste_2)
+
+```
+
